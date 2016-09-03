@@ -7,18 +7,45 @@ import sys
 import spidev
 
 ####Command array####
-commands = bytes([0x61, 0x62, 0x63, 0x64])
+
 #####################
 
+####Set Up###########
+
+#####################
+
+connect = False;
+
+raw = 1
+data = 1
+collection = 1
+test = 1
+
+string = ""
 
 ##### Breaker 1 #####
 
 #indicate GPIO pin
 spi = spidev.SpiDev()
+speed = 2000000
 spi.open(0,0)
-while True:
-    resp = spi.xfer2(commands)
-    print(resp[0])
-    time.sleep(1)
+spi.max_speed_hz = speed
 
+connect = True;
+while connect:
+    raw = spi.xfer2([2])
+    print ("1: ")
+    print (raw)
+    data = spi.xfer2([3])
+    print ("2: ")
+    print (data)
+    collection = spi.xfer2([4])
+    print ("3: ")
+    print (collection)
+    test = spi.xfer2([1])
+    print ("4: ")
+    print (test)
+    connect = False;
+    
+spi.close()
 #####################
